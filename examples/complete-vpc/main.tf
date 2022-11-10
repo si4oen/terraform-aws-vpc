@@ -1,14 +1,15 @@
 provider "aws" {
-  region = "eu-west-1"
+  region = local.region
 }
 
 locals {
-  name   = "complete-example"
+  name   = "ex-${replace(basename(path.cwd), "_", "-")}"
   region = "eu-west-1"
+
   tags = {
-    Owner       = "user"
-    Environment = "staging"
-    Name        = "complete"
+    Example    = local.name
+    GithubRepo = "terraform-aws-vpc"
+    GithubOrg  = "terraform-aws-modules"
   }
 }
 
@@ -29,6 +30,13 @@ module "vpc" {
   elasticache_subnets = ["10.0.31.0/24", "10.0.32.0/24", "10.0.33.0/24"]
   redshift_subnets    = ["10.0.41.0/24", "10.0.42.0/24", "10.0.43.0/24"]
   intra_subnets       = ["10.0.51.0/24", "10.0.52.0/24", "10.0.53.0/24"]
+
+  private_subnet_names = ["Private Subnet One", "Private Subnet Two"]
+  # public_subnet_names omitted to show default name generation for all three subnets
+  database_subnet_names    = ["DB Subnet One"]
+  elasticache_subnet_names = ["Elasticache Subnet One", "Elasticache Subnet Two"]
+  redshift_subnet_names    = ["Redshift Subnet One", "Redshift Subnet Two", "Redshift Subnet Three"]
+  intra_subnet_names       = []
 
   create_database_subnet_group = false
 
