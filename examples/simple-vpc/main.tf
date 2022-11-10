@@ -4,7 +4,7 @@ provider "aws" {
 
 locals {
   name   = "ex-${replace(basename(path.cwd), "_", "-")}"
-  region = "eu-west-1"
+  region = "us-east-1"
 
   tags = {
     Example    = local.name
@@ -29,8 +29,9 @@ module "vpc" {
 
   enable_ipv6 = true
 
-  enable_nat_gateway = false
+  enable_nat_gateway = true
   single_nat_gateway = true
+  one_nat_gateway_per_az = false
 
   public_subnet_tags = {
     Name = "overridden-name-public"
